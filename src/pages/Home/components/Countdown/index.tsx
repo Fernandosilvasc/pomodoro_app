@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import { CyclesContext } from '../../../../contexts/CyclesContext';
 import { CountdownContainer, Separator } from './styles';
 
-export function Countdown() {
+export function Countdown(): JSX.Element {
   const {
     activeCycle,
     activeCycleId,
