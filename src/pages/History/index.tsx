@@ -1,6 +1,11 @@
+import { useContext } from 'react';
+import { CyclesContext } from '../../contexts/CyclesContext';
+import { formatDistanceToNow, parseISO } from 'date-fns';
+
 import { HistoryContainer, HistoryList, Status } from './styles';
 
 export function History(): JSX.Element {
+  const { cycles } = useContext(CyclesContext);
   return (
     <HistoryContainer>
       <h1>My history</h1>
@@ -10,68 +15,39 @@ export function History(): JSX.Element {
           <thead>
             <tr>
               <th>Task</th>
-              <th>Duration</th>
+              <th>Timer</th>
               <th>Started at</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Task 1</td>
-              <td>20 minutes</td>
-              <td>2 months ago</td>
-              <td>
-                <Status statusColor='green'>Done</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Task 2</td>
-              <td>20 minutes</td>
-              <td>2 months ago</td>
-              <td>
-                <Status statusColor='yellow'>In progress</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Task 3</td>
-              <td>20 minutes</td>
-              <td>2 months ago</td>
-              <td>
-                <Status statusColor='red'>Stopped</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Task 4</td>
-              <td>20 minutes</td>
-              <td>2 months ago</td>
-              <td>
-                <Status statusColor='green'>Done</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Task 5</td>
-              <td>20 minutes</td>
-              <td>2 months ago</td>
-              <td>
-                <Status statusColor='green'>Done</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Task 6</td>
-              <td>20 minutes</td>
-              <td>2 months ago</td>
-              <td>
-                <Status statusColor='green'>Done</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Task 7</td>
-              <td>20 minutes</td>
-              <td>2 months ago</td>
-              <td>
-                <Status statusColor='green'>Done</Status>
-              </td>
-            </tr>
+            {cycles.map((cycle) => {
+              console.log(cycle.startDate);
+              return (
+                <tr key={cycle.id}>
+                  <td>{cycle.task}</td>
+                  <td>{cycle.minutesAmount} min</td>
+                  <td>
+                    {formatDistanceToNow(parseISO(cycle.startDate.toString()), {
+                      addSuffix: true,
+                    })}
+                  </td>
+                  <td>
+                    {cycle.finishedDate && (
+                      <Status statusColor='green'>Finished</Status>
+                    )}
+
+                    {cycle.interruptedDate && (
+                      <Status statusColor='red'>Stopped</Status>
+                    )}
+
+                    {!cycle.finishedDate && !cycle.interruptedDate && (
+                      <Status statusColor='yellow'>In progress</Status>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </HistoryList>
