@@ -46,7 +46,7 @@ export function CyclesContextProvider({
     },
     (initialState) => {
       const storedStateAsJSON = localStorage.getItem(
-        '@ignite-timer:cycles-state-1.0.0'
+        '@pomodoro-app:cycles-state-1.0.0'
       );
 
       if (storedStateAsJSON) {
@@ -71,7 +71,7 @@ export function CyclesContextProvider({
   useEffect(() => {
     const stateJSON = JSON.stringify(cyclesState);
 
-    localStorage.setItem('@ignite-timer:cycles-state-1.0.0', stateJSON);
+    localStorage.setItem('@pomodoro-app:cycles-state-1.0.0', stateJSON);
   }, [cyclesState]);
 
   function setSecondsPassed(seconds: number): void {
